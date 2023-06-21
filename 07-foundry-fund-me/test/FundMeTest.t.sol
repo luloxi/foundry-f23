@@ -11,6 +11,7 @@ contract FundMeTest is Test {
     address USER = makeAddr("user");
     uint256 constant SEND_VALUE = 0.1 ether; // 100000000000000000
     uint256 constant STARTING_BALANCE = 10 ether;
+    uint256 public constant GAS_PRICE = 1;
 
     function setUp() external {
         // us -> FundMeTest -> FundMe
@@ -81,14 +82,26 @@ contract FundMeTest is Test {
         uint256 startingFundMeBalance = address(fundMe).balance;
 
         // Act
-        vm.prank(fundMe.getOwner());
-        fundMe.withdraw();
+
+        // uint256 gasStart = gasleft(); // 1000 gas left
+        // gasleft() is a builtin function in Solidity
+
+        // vm.txGasPrice(GAS_PRICE);
+        vm.prank(fundMe.getOwner()); // c: 200
+        fundMe.withdraw(); // should have spent gas?
+
+        // uint256 gasEnd = gasleft(); // 800
+
+        // uint256 gasUsed = (gasStart - gasEnd) * tx.gasprice;
+        // tx.gasprice is built into solidity and tells us current gas price
+        // console.log(gasUsed);
 
         // Assert
         uint256 endingOwnerBalance = fundMe.getOwner().balance;
         uint256 endingFundMeBalance = address(fundMe).balance;
         assertEq(endingFundMeBalance, 0);
         assertEq(startingFundMeBalance + startingOwnerBalance, endingOwnerBalance);
+        // assert(gasStart != gasEnd);
     }
 
     // uint160 has the same amount of bytes as an address
