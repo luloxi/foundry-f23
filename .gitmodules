@@ -1,0 +1,3 @@
+[submodule "07-foundry-fund-me/lib/foundry-devops"]
+	path = 07-foundry-fund-me/lib/foundry-devops
+	url = https://github.com/Cyfrin/foundry-devops
