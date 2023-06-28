@@ -11,7 +11,7 @@ contract CreateSubscription is Script {
     function createSubscriptionUsingConfig() public returns (uint64) {
         HelperConfig helperConfig = new HelperConfig();
 
-        (,, address vrfCoordinator,,,,) = helperConfig.activeNetworkConfig();
+        (,, address vrfCoordinator,,,,,) = helperConfig.activeNetworkConfig();
         return createSubscription(vrfCoordinator);
     }
 
@@ -36,7 +36,7 @@ contract FundSubscription is Script {
     function fundSubscriptionUsingConfig() public {
         HelperConfig helperConfig = new HelperConfig();
 
-        (,, address vrfCoordinator,, uint64 subscriptionId,, address link) = helperConfig.activeNetworkConfig();
+        (,, address vrfCoordinator,, uint64 subscriptionId,, address link,) = helperConfig.activeNetworkConfig();
         fundSubscription(vrfCoordinator, subscriptionId, link);
     }
 
@@ -62,19 +62,19 @@ contract FundSubscription is Script {
 }
 
 contract AddConsumer is Script {
-    function addConsumer(address raffle, address vrfCoordinator, uint64 subId) public {
+    function addConsumer(address raffle, address vrfCoordinator, uint64 subId, uint256 deployerKey) public {
         console.log("Adding consumer contract: ", raffle);
         console.log("Using vrfCoordinator: ", vrfCoordinator);
         console.log("On ChainID: ", block.chainid);
-        vm.startBroadcast();
+        vm.startBroadcast(deployerKey);
         VRFCoordinatorV2Mock(vrfCoordinator).addConsumer(subId, raffle);
         vm.stopBroadcast();
     }
 
     function addConsumerUsingConfig(address raffle) public {
         HelperConfig helperConfig = new HelperConfig();
-        (,, address vrfCoordinator,, uint64 subscriptionId,,) = helperConfig.activeNetworkConfig();
-        addConsumer(raffle, vrfCoordinator, subscriptionId);
+        (,, address vrfCoordinator,, uint64 subscriptionId,,, uint256 deployerKey) = helperConfig.activeNetworkConfig();
+        addConsumer(raffle, vrfCoordinator, subscriptionId, deployerKey);
         vm.startBroadcast();
         VRFCoordinatorV2Mock(vrfCoordinator).addConsumer(subscriptionId, raffle);
         vm.stopBroadcast();
