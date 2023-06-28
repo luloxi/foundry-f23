@@ -1,3 +1,9 @@
 [submodule "07-foundry-fund-me/lib/foundry-devops"]
 	path = 07-foundry-fund-me/lib/foundry-devops
 	url = https://github.com/Cyfrin/foundry-devops
+[submodule "09-foundry-smart-contract-lottery/lib/solmate"]
+	path = 09-foundry-smart-contract-lottery/lib/solmate
+	url = https://github.com/transmissions11/solmate
+[submodule "09-foundry-smart-contract-lottery/lib/foundry-devops"]
+	path = 09-foundry-smart-contract-lottery/lib/foundry-devops
+	url = https://github.com/ChainAccelOrg/foundry-devops
