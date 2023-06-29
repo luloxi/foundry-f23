@@ -6,4 +6,4 @@
 	url = https://github.com/transmissions11/solmate
 [submodule "09-foundry-smart-contract-lottery/lib/foundry-devops"]
 	path = 09-foundry-smart-contract-lottery/lib/foundry-devops
-	url = https://github.com/ChainAccelOrg/foundry-devops
+	url = https://github.com/chainaccelorg/foundry-devops

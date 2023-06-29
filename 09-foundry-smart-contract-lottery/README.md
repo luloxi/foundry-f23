@@ -1,5 +1,7 @@
 # Proveably Random Raffle Contracts
 
+To deploy to sepolia: `make deploy ARGS="--network sepolia"`
+
 ## About
 
 This code is to create a proveably random smart contract lottery.
@@ -27,3 +29,5 @@ This code is to create a proveably random smart contract lottery.
    1. Work on a local chain
    2. Forked Testnet
    3. Forked Mainnet
+
+Remove console.log from code before deploying, because it costs gas

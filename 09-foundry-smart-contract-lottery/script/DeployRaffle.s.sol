@@ -46,4 +46,6 @@ contract DeployRaffle is Script {
         addConsumer.addConsumer(address(raffle), vrfCoordinator, subscriptionId, deployerKey);
         return (raffle, helperConfig);
     }
+
+    // Added an upkeep
 }

@@ -24,6 +24,7 @@ pragma solidity ^0.8.18;
 
 import {VRFCoordinatorV2Interface} from "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol"; // request random numbers and manage subscription
 import {VRFConsumerBaseV2} from "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol"; // to get random numbers
+// import {console} from "forge-std/console.sol";
 
 /**
  * @title A simple Raffle Contract
@@ -98,10 +99,10 @@ contract Raffle is VRFConsumerBaseV2 {
         if (s_raffleState != RaffleState.OPEN) {
             revert Raffle__RaffleNotOpen();
         }
-        // require(msg.value >= i_entranceFee, "Not enough ETH sent");
         if (msg.value < i_entranceFee) {
             revert Raffle__NotEnoughETHSent();
         }
+        // require(msg.value >= i_entranceFee, "Not enough ETH sent");
 
         s_players.push(payable(msg.sender));
         emit EnteredRaffle(msg.sender);
