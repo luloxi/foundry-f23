@@ -26,6 +26,11 @@ contract RaffleTest is Test {
     address public PLAYER = makeAddr("player");
     uint256 public constant STARTING_USER_BALANCE = 10 ether;
 
+    modifier skipFork() {
+        if (block.chainid != 31337) return;
+        _;
+    }
+
     modifier raffleEnteredAndTimePassed() {
         vm.prank(PLAYER);
         raffle.enterRaffle{value: entranceFee}();
@@ -183,13 +188,14 @@ contract RaffleTest is Test {
     function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 randomRequestId)
         public
         raffleEnteredAndTimePassed
+        skipFork
     {
         // Arrange
         vm.expectRevert("nonexistent request");
         VRFCoordinatorV2Mock(vrfCoordinator).fulfillRandomWords(randomRequestId, address(raffle));
     }
 
-    function testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney() public raffleEnteredAndTimePassed {
+    function testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney() public raffleEnteredAndTimePassed skipFork {
         // Arrange
         // Funding accounts and entering the raffle with each of them
         uint256 startingIndex = 1;
@@ -214,11 +220,11 @@ contract RaffleTest is Test {
         VRFCoordinatorV2Mock(vrfCoordinator).fulfillRandomWords(uint256(requestId), address(raffle));
 
         // Assert
-        assert(uint256(raffle.getRaffleState()) == 0); // Make sure the raffle state is now open
-        assert(raffle.getRecentWinner() != address(0)); // Make sure a winner was picked
-        assert(raffle.getLengthOfPlayers() == 0); // Make sure the players array was reset
-        assert(previousTimeStamp < raffle.getLastTimeStamp()); // Make sure the timestamp was updated
-            // ToDo: Write a test for emit PickedWinner(winnner)
-        assert(raffle.getRecentWinner().balance == STARTING_USER_BALANCE + prize - entranceFee); // Make sure the winner got their money
+        // ToDo: Write a test for emit PickedWinner(winnner)
+        assert(uint256(raffle.getRaffleState()) == 0); // Raffle state is now open?
+        assert(raffle.getRecentWinner() != address(0)); // Winner was picked?
+        assert(raffle.getLengthOfPlayers() == 0); // Players array was reset?
+        assert(previousTimeStamp < raffle.getLastTimeStamp()); // Timestamp was updated?
+        assert(raffle.getRecentWinner().balance == STARTING_USER_BALANCE + prize - entranceFee); // Winner got their money?
     }
 }

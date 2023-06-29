@@ -24,11 +24,11 @@ contract DeployRaffle is Script {
         if (subscriptionId == 0) {
             // we are going to need to create a subscription!
             CreateSubscription createSubscription = new CreateSubscription();
-            subscriptionId = createSubscription.createSubscription(vrfCoordinator);
+            subscriptionId = createSubscription.createSubscription(vrfCoordinator, deployerKey);
 
             // Fund it!
             FundSubscription fundSubscription = new FundSubscription();
-            fundSubscription.fundSubscription(vrfCoordinator, subscriptionId, link);
+            fundSubscription.fundSubscription(vrfCoordinator, subscriptionId, link, deployerKey);
         }
 
         vm.startBroadcast();
